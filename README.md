@@ -12,7 +12,7 @@ An asynchronous REST API built with FastAPI, PostgreSQL, Jinja2, and WeasyPrint 
 
 1. Clone repository:
    ```bash
-   git clone [https://github.com/mmesomasaint/autoinvoicegenerator.git](https://github.com/mmesomasaint/autoinvoicegenerator.git)
+   git clone https://github.com/mmesomasaint/autoinvoicegenerator.git
    cd autoinvoicegenerator
    ```
    
