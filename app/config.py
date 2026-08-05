@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 from pydantic import Field
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "InvoiceForge Microservice"
+    PROJECT_NAME: str = "AutoInvoiceGenerator Microservice"
     ENVIRONMENT: str = "development"
     API_KEY: str = Field(default="dev_secret_api_key_12345", env="API_KEY")
     
