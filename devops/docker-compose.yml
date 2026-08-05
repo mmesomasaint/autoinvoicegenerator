@@ -1,1 +1,45 @@
-# devops/docker-compose.yml
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: devops/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/invoicedb
+      - SMTP_HOST=mailpit
+      - SMTP_PORT=1025
+      - API_KEY=prod_secure_api_key_8899
+    volumes:
+      - invoice_storage:/app/storage/invoices
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=invoicedb
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "1025:1025" # SMTP port
+      - "8025:8025" # Web Dashboard UI
+
+volumes:
+  postgres_data:
+  invoice_storage:
