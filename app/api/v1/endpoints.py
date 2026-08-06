@@ -9,7 +9,7 @@ from app.models.invoice import InvoiceModel, InvoiceStatus
 from app.core.database import get_db
 from app.core.security import verify_api_key
 from app.services.pdf_service import pdf_service
-from app.services.email_service import email_service
+from app.services.email_service import send_invoice_email
 from app.config import settings
 
 router = APIRouter()
@@ -26,7 +26,7 @@ async def process_invoice_background(invoice_id: str, db_factory):
             pdf_filename = f"Invoice_{invoice.id}.pdf"
             pdf_path = os.path.join(settings.STORAGE_DIR, pdf_filename)
             
-            # 1. Compile PDF
+            # Compile PDF
             pdf_service.generate_invoice_pdf({
                 "id": invoice.id,
                 "client_name": invoice.client_name,
@@ -41,10 +41,10 @@ async def process_invoice_background(invoice_id: str, db_factory):
             invoice.pdf_path = pdf_path
             invoice.status = InvoiceStatus.GENERATED.value
 
-            # 2. Dispatch Email
+            # Dispatch Email
             await email_service.send_invoice_email(
-                recipient_email=invoice.client_email,
-                invoice_id=invoice.id,
+                client_email=payload.client_email, 
+                invoice_id=invoice_id,
                 pdf_path=pdf_path
             )
             invoice.status = InvoiceStatus.SENT.value
