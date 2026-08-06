@@ -16,7 +16,7 @@ async def send_invoice_email(client_email: str, invoice_id: str, pdf_path: str =
         f"Your invoice #{invoice_id} has been generated."
     )
 
-    # Optional: Attach the HTML/PDF file if it exists
+    # Attach the HTML/PDF file if it exists
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, 'rb') as f:
             file_data = f.read()
