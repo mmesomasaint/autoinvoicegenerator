@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     SMTP_USER: str = Field(default="", env="SMTP_USER")
     SMTP_PASSWORD: str = Field(default="", env="SMTP_PASSWORD")
     EMAILS_FROM_EMAIL: str = Field(default="billing@company.com", env="EMAILS_FROM_EMAIL")
+    EMAILS_FROM_NAME: str = Field(default="Company", env="EMAILS_FROM_NAME")
     
     # Storage
     STORAGE_DIR: str = "storage/invoices"
