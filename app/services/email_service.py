@@ -3,19 +3,37 @@ import aiosmtplib
 from email.message import EmailMessage
 import os
 
-async def send_invoice_email(client_email: str, invoice_id: str, pdf_path: str = None):
+async def send_invoice_email(
+    client_email: str, 
+    invoice_id: str, 
+    pdf_path: str = None,
+    sender_name: Optional[str] = None,
+    sender_email: Optional[str] = None,
+    copy_to_email: Optional[str] = None,
+):
     """Sends an email over local SMTP to be caught by Mailpit/MailHog"""
     
     message = EmailMessage()
-    message["From"] = "billing@yourcompany.com"
-    message["To"] = client_email
-    message["Subject"] = f"Your Invoice #{invoice_id} is Ready"
+    # Resolve dynamic values vs system fallbacks
+    from_name = sender_name or settings.EMAILS_FROM_NAME
+    from_address = sender_email or settings.EMAILS_FROM_EMAIL
     
-    message.set_content(
-        f"Hello,\n\nThank you for your business. "
-        f"Your invoice #{invoice_id} has been generated."
-    )
+    message["From"] = f"{from_name} <{from_address}>"
+    message["To"] = client_email
+    
+    if copy_to_email:
+        message["Bcc"] = copy_to_email
 
+    message["Subject"] = f"Invoice #{invoice_id} from {from_name} is Ready"
+
+   # Body formatted cleanly using runtime variables
+    message.set_content(
+        f"Hello {client_name},\n\n"
+        f"Please find attached Invoice #{invoice_id}.\n\n"
+        f"Thank you for your business!\n\n"
+        f"Best regards,\n"
+        f"{from_name}"
+    )
     # Attach the HTML/PDF file if it exists
     if pdf_path and os.path.exists(pdf_path):
         with open(pdf_path, 'rb') as f:
