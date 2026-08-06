@@ -1,33 +1,39 @@
 # app/services/email_service.py
-import smtplib
+import aiosmtplib
 from email.message import EmailMessage
-import aiofiles
-from app.config import settings
+import os
 
-class EmailService:
-    async def send_invoice_email(self, recipient_email: str, invoice_id: str, pdf_path: str):
-        """Asynchronously reads generated PDF and dispatches via SMTP."""
-        msg = EmailMessage()
-        msg['Subject'] = f"Invoice #{invoice_id[:8]} from Your Company"
-        msg['From'] = settings.EMAILS_FROM_EMAIL
-        msg['To'] = recipient_email
-        msg.set_content(
-            f"Hello,\n\nPlease find your attached invoice #{invoice_id[:8]}.\n\nThank you for your business!"
-        )
+async def send_invoice_email(client_email: str, invoice_id: str, pdf_path: str = None):
+    """Sends an email over local SMTP to be caught by Mailpit/MailHog"""
+    
+    message = EmailMessage()
+    message["From"] = "billing@yourcompany.com"
+    message["To"] = client_email
+    message["Subject"] = f"Your Invoice #{invoice_id} is Ready"
+    
+    message.set_content(
+        f"Hello,\n\nThank you for your business. "
+        f"Your invoice #{invoice_id} has been generated."
+    )
 
-        async with aiofiles.open(pdf_path, 'rb') as f:
-            file_data = await f.read()
-            msg.add_attachment(
+    # Optional: Attach the HTML/PDF file if it exists
+    if pdf_path and os.path.exists(pdf_path):
+        with open(pdf_path, 'rb') as f:
+            file_data = f.read()
+            message.add_attachment(
                 file_data, 
                 maintype='application', 
                 subtype='pdf', 
-                filename=f"Invoice_{invoice_id[:8]}.pdf"
+                filename=os.path.basename(pdf_path)
             )
 
-        # Non-blocking SMTP interaction
-        with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as server:
-            if settings.SMTP_USER:
-                server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-            server.send_message(msg)
-
-email_service = EmailService()
+    try:
+        # Port 1025 is the default SMTP port for Mailpit and MailHog
+        await aiosmtplib.send(
+            message,
+            hostname="127.0.0.1",
+            port=1025
+        )
+        print(f"Real email successfully dispatched to {client_email}")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
