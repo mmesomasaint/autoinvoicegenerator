@@ -10,7 +10,7 @@ connect_args = {"check_same_thread": False} if is_sqlite else {}
 # Initialize non-blocking async engine
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=False,
+    echo=True,
     future=True,
     connect_args=connect_args
 )
