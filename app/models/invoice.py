@@ -1,13 +1,12 @@
 # app/models/invoice.py
+
+from app.core.database import Base
 from sqlalchemy import Column, String, Float, DateTime, JSON, Enum
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime, timezone
 import uuid
 import enum
-
-class Base(AsyncAttrs, DeclarativeBase):
-    pass
 
 class InvoiceStatus(str, enum.Enum):
     PENDING = "PENDING"
