@@ -69,7 +69,7 @@ API_KEY="dev_secret_api_key_12345"
 DATABASE_URL="sqlite+aiosqlite:///./dev_invoices.db"
 SMTP_HOST="localhost"
 SMTP_PORT=1025
-EMAILS_FROM_EMAIL="billing@optima.local"
+EMAILS_FROM_EMAIL="billing@yourcompanyname.local"
 STORAGE_DIR="storage/invoices"
 ```
 
@@ -99,8 +99,8 @@ Step 2: Interactive Testing via Swagger UI
      "client_name": "Acme Enterprises",
      "client_email": "finance@acme.com",
      "tax_rate": 0.075,
-     "sender_company_name": "Optima Logic Studio",
-     "sender_email": "billing@optima.local",
+     "sender_company_name": "Your Company Name",
+     "sender_email": "billing@yourcompanyname.local",
      "items": [
        {
          "description": "Backend Architecture & Systems Design",
@@ -126,7 +126,7 @@ curl -X POST "http://localhost:8000/api/v1/invoices" \
      -H "X-API-Key: dev_secret_api_key_12345" \
      -d '{
            "client_name": "Global Tech Ltd",
-           "client_email": "billing@globaltech.com",
+           "client_email": "billing@globaltec.com",
            "tax_rate": 0.1,
            "items": [
              {"description": "API Integration Service", "quantity": 1, "unit_price": 500.0}
