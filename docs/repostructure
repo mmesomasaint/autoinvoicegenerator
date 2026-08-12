@@ -1,0 +1,46 @@
+```Plaintext
+invoice-forge/
+├── app/
+│   ├── __init__.py
+│   ├── main.py                   # Application initialization & lifespan execution
+│   ├── config.py                 # Environment validation via Pydantic Settings
+│   ├── api/
+│   │   ├── __init__.py
+│   │   └── v1/
+│   │       ├── __init__.py
+│   │       ├── router.py         # Main V1 endpoint router
+│   │       └── endpoints.py      # Invoice REST endpoints
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── database.py       # Async SQLAlchemy engine & session factory
+│   │   └── security.py       # API Key authentication & input scrubbing
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── invoice.py            # SQLAlchemy database ORM entities
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   └── invoice.py            # Pydantic validation models
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── pdf_service.py        # Jinja2 -> WeasyPrint/HTML PDF compilation
+│   │   ├── storage_service.py    # Local/S3 storage driver abstraction
+│   │   └── email_service.py      # Async SMTP transactional mailer
+│   └── templates/
+│       └── invoice.html          # Responsive CSS & HTML invoice layout
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py               # Pytest fixtures & async SQLite setup
+│   ├── test_api.py               # Endpoint unit and integration tests
+│   └── test_services.py          # PDF generation & calculation tests
+├── devops/
+│   ├── docker-compose.yml        # Orchestration (API + PostgreSQL + Mailpit)
+│   ├── Dockerfile                # Multi-stage container production build
+│   └── nginx.conf                # Reverse proxy & rate-limiting configuration
+├── docs/
+│   └── ARCHITECTURE.md           # System architecture design document
+├── .env.example
+├── .gitignore
+├── pytest.ini
+├── README.md                     # GitHub main repository documentation
+└── requirements.txt              # Locked application dependencies
+```
