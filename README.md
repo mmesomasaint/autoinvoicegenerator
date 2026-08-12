@@ -15,7 +15,7 @@ An enterprise-grade, asynchronous REST API microservice built with **FastAPI**, 
 
 ---
 
-## 🛠 System Architecture & Flow
+## System Architecture & Flow
 
 ```text
 [ Client Application ] ──► HTTP POST /api/v1/invoices (with X-API-Key Header)
