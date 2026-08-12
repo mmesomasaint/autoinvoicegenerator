@@ -17,7 +17,7 @@ async def test_create_invoice_success(client, monkeypatch):
     async def mock_send_email(*args, **kwargs):
         return True
     
-    monkeypatch.setattr("app.services.email_service.email_service.send_invoice_email", mock_send_email)
+    monkeypatch.setattr("app.services.email_service.send_invoice_email", mock_send_email)
 
     payload = {
         "client_name": "Test Enterprise",
