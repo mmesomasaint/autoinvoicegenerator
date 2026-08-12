@@ -1,5 +1,7 @@
 # SYSTEM ARCHITECTURE
   FIG 1.0.0.0
+
+  ```Plaintext
                         +---------------------------------------+
                         |           Client Application          |
                         +------------------- +------------------+
@@ -41,3 +43,4 @@
                                |    Local / S3 Storage     |
                                |   (Store Generated PDF)   |
                                +---------------------------+
+```
